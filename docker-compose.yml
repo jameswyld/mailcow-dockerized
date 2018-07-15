@@ -401,6 +401,64 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock:ro
         - /lib/modules:/lib/modules:ro
 
+    duplicity-backup:
+      image: mailcow/docker-duplicity:docker
+      build: ./data/Dockerfiles/duplicity
+      hostname: duplicity-backup
+      privileged: true  # To speak with host's docker socket
+      restart: always
+      sysctls:
+        - net.ipv6.conf.all.disable_ipv6=${SYSCTL_IPV6_DISABLED:-0}
+      volumes:
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+          # add mailcow install folder - preserve config & customization from the current mail server
+          - /opt/mailcow-dockerized/:/mnt/backup/src/mailcow-dockerized/:ro
+          # add all mailcow volumes, read only, into the backup src path
+          - vmail-vol-1:/mnt/backup/src/volumes/vmail:ro
+          - mysql-vol-1:/mnt/backup/src/volumes/mysql:ro
+          - redis-vol-1:/mnt/backup/src/volumes/redis:ro
+          - rspamd-vol-1:/mnt/backup/src/volumes/rspamd:ro
+          - postfix-vol-1:/mnt/backup/src/volumes/postfix:ro
+          - crypt-vol-1:/mnt/backup/src/volumes/crypt:ro
+      environment:
+          # enable/disable duplicity
+          SKIP_DUPLICITY: ${SKIP_DUPLICITY:-n}
+          # monthly full backup
+          OPTIONS_EXTRA: --full-if-older-than 1M
+          # recreate mysql backup before uploading it
+          # by default it lives within the mysql vol: /var/lib/mysql/mailcow-backup.sql
+          JOB_200_WHAT:
+            mysql-backup
+          JOB_200_WHEN: daily
+          # remove >3 Month old full backups
+          JOB_900_WHAT:
+            dup remove-older-than 3M --force ${DUPLICITY_AWS_S3_PATH}
+          JOB_900_WHEN: weekly
+          # remove older incrementals
+          JOB_901_WHAT:
+            dup remove-all-inc-of-but-n-full 2 --force ${DUPLICITY_AWS_S3_PATH}
+          JOB_910_WHEN: weekly
+          # Additional configurations for Duplicity
+          AWS_ACCESS_KEY_ID: ${DUPLICITY_AWS_KEY_ID}
+          AWS_SECRET_ACCESS_KEY: ${DUPLICITY_AWS_SECRET}
+          DST: ${DUPLICITY_AWS_S3_PATH}
+          # send the mysql mailcow pw in as env var
+          MAILCOW_MYSQL_USER: ${DBUSER}
+          MAILCOW_MYSQL_PASS: ${DBPASS}
+          MYSQL_DOCKER_IMAGE: mailcowdockerized_mysql-mailcow_1
+          # use the network alias of postfix
+          SMTP_HOST: postfix
+          SMTP_PORT: 25
+          EMAIL_FROM: ${DUPLICITY_EMAIL}
+          EMAIL_TO: ${DUPLICITY_EMAIL}
+          PASSPHRASE: ${DUPLICITY_ENCRYPTION_KEY}
+      dns:
+        - ${IPV4_NETWORK:-172.22.1}.254
+      networks:
+        mailcow-network:
+          aliases:
+            - duplicity
+
 networks:
   mailcow-network:
     driver: bridge

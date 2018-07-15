@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Preparing to back up MYSQL - mailcow-backup.sql file status is:"
+docker exec ${MYSQL_DOCKER_IMAGE} stat --printf "%n\nSize:%s\nModified:%y\n" /var/lib/mysql/mailcow-backup.sql
+docker exec ${MYSQL_DOCKER_IMAGE} mysqldump -u ${MAILCOW_MYSQL_USER} --password=${MAILCOW_MYSQL_PASS} --all-databases -r /var/lib/mysql/mailcow-backup.sql
+echo "Finished backing up - mailcow-backup.sql file status is now:"
+docker exec ${MYSQL_DOCKER_IMAGE} stat --printf "%n\nSize:%s\nModified:%y\n" /var/lib/mysql/mailcow-backup.sql

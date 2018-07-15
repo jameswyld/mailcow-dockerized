@@ -144,6 +144,16 @@ SYSCTL_IPV6_DISABLED=0
 #API_KEY=
 #API_ALLOW_FROM=127.0.0.1,1.2.3.4
 
+# Duplicity S3 Backup Settings
+# Fill out AWS credentials, encryption key, email
+# set "SKIP_DUPLICITY" to "n" to enable
+SKIP_DUPLICITY=y
+DUPLICITY_AWS_KEY_ID=awskey
+DUPLICITY_AWS_SECRET=awssecret
+DUPLICITY_AWS_S3_PATH=s3://region.amazonaws.com/my-bucket-name/backup-path
+DUPLICITY_ENCRYPTION_KEY=encryption-key
+DUPLICITY_EMAIL=admin@${MAILCOW_HOSTNAME}
+
 EOF
 
 mkdir -p data/assets/ssl
