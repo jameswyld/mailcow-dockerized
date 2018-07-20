@@ -1124,6 +1124,9 @@ if (isset($_SESSION['mailcow_cc_role']) || isset($_SESSION['pending_mailcow_cc_u
           case "ui_texts":
             process_edit_return(customize('edit', 'ui_texts', $attr));
           break;
+          case "duplicity_settings":
+            process_edit_return(customize('edit', 'duplicity_settings', $attr));
+          break;
           case "self":
             if ($_SESSION['mailcow_cc_role'] == "domainadmin") {
               process_edit_return(domain_admin('edit', $attr));

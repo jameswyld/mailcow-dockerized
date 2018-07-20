@@ -98,3 +98,4 @@ if (isset($_SESSION['mailcow_cc_role'])) {
   set_acl();
 }
 $UI_TEXTS = customize('get', 'ui_texts');
+$DUPLICITY_SETTINGS = customize('get', 'duplicity_settings');

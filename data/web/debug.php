@@ -74,7 +74,8 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
               'php-fpm-mailcow',
               'mysql-mailcow',
               'netfilter-mailcow',
-              'clamd-mailcow'
+              'clamd-mailcow',
+              'duplicity-backup'
             );
             $container_states = (docker($container, 'states'));
             foreach ($container_array as $container) {
