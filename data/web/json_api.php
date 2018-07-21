@@ -131,6 +131,9 @@ if (isset($_SESSION['mailcow_cc_role']) || isset($_SESSION['pending_mailcow_cc_u
           case "fwdhost":
             process_add_return(fwdhost('add', $attr));
           break;
+          case "duplicityjob":
+            process_add_return(duplicityjob('add', $attr));
+          break;
           case "dkim":
             process_add_return(dkim('add', $attr));
           break;
@@ -813,6 +816,16 @@ if (isset($_SESSION['mailcow_cc_role']) || isset($_SESSION['pending_mailcow_cc_u
               break;
             }
           break;
+          case "duplicityjob":
+            switch ($object) {
+              case "all":
+                process_get_return(duplicityjob('get'));
+              break;
+              default:
+                process_get_return(duplicityjob('details', $object));
+              break;
+            }
+          break;
           case "quarantine":
             // "all" will not print details
             switch ($object) {
@@ -992,6 +1005,9 @@ if (isset($_SESSION['mailcow_cc_role']) || isset($_SESSION['pending_mailcow_cc_u
           break;
           case "fwdhost":
             process_delete_return(fwdhost('delete', array('forwardinghost' => $items)));
+          break;
+          case "duplicityjob":
+            process_delete_return(duplicityjob('delete', array('duplicityjob' => $items)));
           break;
           case "dkim":
             process_delete_return(dkim('delete', array('domains' => $items)));

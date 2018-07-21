@@ -402,7 +402,6 @@ services:
         - /lib/modules:/lib/modules:ro
 
     duplicity-backup:
-      image: mailcow/docker-duplicity:docker
       build: ./data/Dockerfiles/duplicity
       hostname: duplicity-backup
       privileged: true  # To speak with host's docker socket
@@ -421,27 +420,8 @@ services:
           - postfix-vol-1:/mnt/backup/src/volumes/postfix:ro
           - crypt-vol-1:/mnt/backup/src/volumes/crypt:ro
       environment:
-          # enable/disable duplicity
-          SKIP_DUPLICITY: ${SKIP_DUPLICITY:-n}
-          # monthly full backup
-          OPTIONS_EXTRA: --full-if-older-than 1M
-          # recreate mysql backup before uploading it
-          # by default it lives within the mysql vol: /var/lib/mysql/mailcow-backup.sql
-          JOB_200_WHAT:
-            mysql-backup
-          JOB_200_WHEN: daily
-          # remove >3 Month old full backups
-          JOB_900_WHAT:
-            dup remove-older-than 3M --force ${DUPLICITY_AWS_S3_PATH}
-          JOB_900_WHEN: weekly
-          # remove older incrementals
-          JOB_901_WHAT:
-            dup remove-all-inc-of-but-n-full 2 --force ${DUPLICITY_AWS_S3_PATH}
-          JOB_910_WHEN: weekly
-          # Additional configurations for Duplicity
-          AWS_ACCESS_KEY_ID: ${DUPLICITY_AWS_KEY_ID}
-          AWS_SECRET_ACCESS_KEY: ${DUPLICITY_AWS_SECRET}
-          DST: ${DUPLICITY_AWS_S3_PATH}
+          REDIS_HOST: redis-mailcow
+          # Additional configurations for Duplicity are in admin page
           # send the mysql mailcow pw in as env var
           MAILCOW_MYSQL_USER: ${DBUSER}
           MAILCOW_MYSQL_PASS: ${DBPASS}
@@ -451,7 +431,6 @@ services:
           SMTP_PORT: 25
           EMAIL_FROM: ${DUPLICITY_EMAIL}
           EMAIL_TO: ${DUPLICITY_EMAIL}
-          PASSPHRASE: ${DUPLICITY_ENCRYPTION_KEY}
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       networks:

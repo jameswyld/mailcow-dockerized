@@ -639,11 +639,11 @@ $tfa_data = get_tfa();
             <input type="checkbox" class="form-control" id="duplicity_enabled" name="duplicity_enabled" value="true" <?=($DUPLICITY_SETTINGS['duplicity_enabled']) ? 'checked' : '';?> >
           </div>
           <div class="form-group">
-            <label for="main_name">Lang: Backup Storage Backend:</label>
+            <label for="main_name">Lang: Backup Storage Backend (non-functional):</label>
             <select data-width="200px" class="form-control" id="duplicity_backend" name="duplicity_backend" title="Backup Storage Backend" required>
-              <option data-subtext="duplicity_backend">S3</option>
-              <option data-subtext="duplicity_backend">FTPS</option>
-              <option data-subtext="duplicity_backend">Local</option>
+              <option>S3</option>
+              <option>FTPS</option>
+              <option>Local</option>
             </select>
           </div>
           <div class="form-group">
@@ -670,6 +670,43 @@ $tfa_data = get_tfa();
           <button class="btn btn-default" id="edit_selected" data-item="duplicity" data-id="duplicity_settings" data-api-url='edit/duplicity_settings' data-api-attr='{}' href="#"><span class="glyphicon glyphicon-check"></span> <?=$lang['admin']['save'];?></button>
         </form>
         <p class="help-block"><b>DEBUG</b><br /> <pre><?php var_dump($DUPLICITY_SETTINGS); ?></pre> </p>
+      </div>
+
+      <div class="panel-heading">Lang: Backup Jobs</div>
+      <div class="panel-body">
+        <p style="margin-bottom:40px">The list of backup jobs</p>
+        <div class="table-responsive">
+          <table class="table table-striped table-condensed" id="duplicityjobstable"></table>
+        </div>
+        <div class="mass-actions-admin">
+          <div class="btn-group btn-group-sm">
+            <button type="button" id="toggle_multi_select_all" data-id="duplicityjobs" class="btn btn-default"><?=$lang['mailbox']['toggle_all'];?></button>
+            <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#"><?=$lang['mailbox']['quick_actions'];?> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a id="delete_selected" data-id="duplicityjobs" data-api-url='delete/duplicityjob' href="#"><?=$lang['admin']['remove'];?></a></li>
+            </ul>
+          </div>
+        </div>
+        <legend>Lang: Add Backup Job</legend>
+        <p class="help-block">Lang: Add backup job:</p>
+        <form class="form" data-id="duplicityjob" role="form" method="post">
+          <div class="form-group">
+            <label for="duplicity_job_id">Lang: Job ID:</label>
+            <input class="form-control" id="duplicity_job_id" name="duplicity_job_id" placeholder="200" required>
+            <label for="duplicity_job_what">Lang: Command:</label>
+            <input class="form-control" id="duplicity_job_what" name="duplicity_job_what" placeholder="backup" required>
+            <label for="duplicity_job_when">Lang: Job Frequency:</label>
+            <select data-width="200px" class="form-control" id="duplicity_job_when" name="duplicity_job_when" title="Job Interval" required>
+              <option>15min</option>
+              <option>hourly</option>
+              <option>daily</option>
+              <option>weekly</option>
+              <option>monthly</option>
+            </select>
+          </div>
+          <button class="btn btn-default" id="add_item" data-id="duplicityjob" data-api-url='add/duplicityjob' data-api-attr='{}' href="#"><span class="glyphicon glyphicon-plus"></span> <?=$lang['admin']['add'];?></button>
+        </form>
+        <p class="help-block"><b>DEBUG:</b><br /> <a href="/api/v1/get/duplicityjob/all">view raw jobs</a></p>
       </div>
     </div>
 
