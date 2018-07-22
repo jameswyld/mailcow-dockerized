@@ -31,6 +31,9 @@ docker run --rm -it --user root \
     wernight/duplicity \
     duplicity restore $DUPLICITY_AWS_S3_PATH $DUPLICITY_RESTORE_PATH/mailcow-restore
 
+echo "Done! removing old mailcow folder and copying backedup one....."
+rm -R /opt/mailcow-dockerized
+
 # move mailcow-dockerized folder into /opt
 mv $DUPLICITY_RESTORE_PATH/mailcow-restore/mailcow-dockerized /opt
 cd /opt/mailcow-dockerized
@@ -68,3 +71,6 @@ docker-compose stop mysql-mailcow
 
 echo "Done! Starting it all up....."
 docker-compose up -d
+
+echo "Done! Cleaning it all up....."
+rm -R /opt/restore
