@@ -624,22 +624,22 @@ $tfa_data = get_tfa();
 
 
 
-
+<?=$lang['admin']['duplicity_'];?>
 
     <span class="anchor" id="backups"></span>
     <div class="panel panel-default">
-      <div class="panel-heading">Lang: Backups</div>
+      <div class="panel-heading"><?=$lang['admin']['duplicity_heading'];?></div>
       <div class="panel-body">
-        <legend>Lang: Backup Settings</legend>
-        <p class="help-block">Lang: Set up backups here</p>
+        <legend><?=$lang['admin']['duplicity_backup_settings'];?></legend>
+        <p class="help-block"><?=$lang['admin']['duplicity_backup_help'];?></p>
 
         <form class="form" data-id="duplicity_settings" role="form" method="post">
           <div class="form-group">
-            <label for="title_name">Lang: Enable Backups?</label>
+            <label for="title_name"><?=$lang['admin']['duplicity_enabled'];?></label>
             <input type="checkbox" class="form-control" id="duplicity_enabled" name="duplicity_enabled" value="true" <?=($DUPLICITY_SETTINGS['duplicity_enabled']) ? 'checked' : '';?> >
           </div>
           <div class="form-group">
-            <label for="main_name">Lang: Backup Storage Backend (non-functional):</label>
+            <label for="main_name"><?=$lang['admin']['duplicity_backend'];?>:</label>
             <select data-width="200px" class="form-control" id="duplicity_backend" name="duplicity_backend" title="Backup Storage Backend" required>
               <option>S3</option>
               <option>FTPS</option>
@@ -647,24 +647,24 @@ $tfa_data = get_tfa();
             </select>
           </div>
           <div class="form-group">
-            <label for="apps_name">Lang: Storage path:</label>
+            <label for="apps_name"><?=$lang['admin']['duplicity_dst'];?>:</label>
             <input type="text" class="form-control" id="duplicity_dst" name="duplicity_dst" placeholder="file://tmp/backups" value="<?=$DUPLICITY_SETTINGS['duplicity_dst'];?>">
           </div>
           <div class="form-group">
-            <label for="apps_name">Lang: Backup Encryption Key:</label>
+            <label for="apps_name"><?=$lang['admin']['duplicity_encryption'];?>:</label>
             <input type="password" class="form-control" id="duplicity_encryption" name="duplicity_encryption" value="<?=$DUPLICITY_SETTINGS['duplicity_encryption'];?>">
           </div>
-          <p class="help-block">Lang: Optional storage credentials.  Set what is needed according to your backend above.</p>
+          <p class="help-block"><?=$lang['admin']['duplicity_credentials_help'];?></p>
           <div class="form-group">
-            <label for="help_text">Lang: S3 API Key (optional):</label>
+            <label for="help_text"><?=$lang['admin']['duplicity_s3_apikey'];?>:</label>
             <input type="text" class="form-control" id="duplicity_s3_apikey" name="duplicity_s3_apikey" placeholder="<s3 api key>" value="<?=$DUPLICITY_SETTINGS['duplicity_s3_apikey'];?>">
           </div>
           <div class="form-group">
-            <label for="help_text">Lang: S3 API Secret (optional):</label>
+            <label for="help_text"><?=$lang['admin']['duplicity_s3_apisecret'];?>:</label>
             <input type="password" class="form-control" id="duplicity_s3_apisecret" name="duplicity_s3_apisecret" placeholder="<s3 api secret>" value="<?=$DUPLICITY_SETTINGS['duplicity_s3_apisecret'];?>">
           </div>
           <div class="form-group">
-            <label for="help_text">Lang: FTPS/SFTP password (optional):</label>
+            <label for="help_text"><?=$lang['admin']['duplicity_ftp_pass'];?>:</label>
             <input type="password" class="form-control" id="duplicity_ftp_pass" name="duplicity_ftp_pass" placeholder="<ftp password>" value="<?=$DUPLICITY_SETTINGS['duplicity_ftp_pass'];?>">
           </div>
           <button class="btn btn-default" id="edit_selected" data-item="duplicity" data-id="duplicity_settings" data-api-url='edit/duplicity_settings' data-api-attr='{}' href="#"><span class="glyphicon glyphicon-check"></span> <?=$lang['admin']['save'];?></button>
@@ -672,9 +672,9 @@ $tfa_data = get_tfa();
         <p class="help-block"><b>DEBUG</b><br /> <pre><?php var_dump($DUPLICITY_SETTINGS); ?></pre> </p>
       </div>
 
-      <div class="panel-heading">Lang: Backup Jobs</div>
+      <div class="panel-heading"><?=$lang['admin']['duplicity_jobs_heading'];?></div>
       <div class="panel-body">
-        <p style="margin-bottom:40px">The list of backup jobs</p>
+        <p style="margin-bottom:40px"><?=$lang['admin']['duplicity_jobs_list'];?></p>
         <div class="table-responsive">
           <table class="table table-striped table-condensed" id="duplicityjobstable"></table>
         </div>
@@ -687,15 +687,15 @@ $tfa_data = get_tfa();
             </ul>
           </div>
         </div>
-        <legend>Lang: Add Backup Job</legend>
-        <p class="help-block">Lang: Add backup job:</p>
+        <legend><?=$lang['admin']['duplicity_job_add'];?></legend>
+        <p class="help-block"><?=$lang['admin']['duplicity_job_add_help'];?></p>
         <form class="form" data-id="duplicityjob" role="form" method="post">
           <div class="form-group">
-            <label for="duplicity_job_id">Lang: Job ID:</label>
+            <label for="duplicity_job_id"><?=$lang['admin']['duplicity_job_id'];?>:</label>
             <input class="form-control" id="duplicity_job_id" name="duplicity_job_id" placeholder="200" required>
-            <label for="duplicity_job_what">Lang: Command:</label>
+            <label for="duplicity_job_what"><?=$lang['admin']['duplicity_job_what'];?>:</label>
             <input class="form-control" id="duplicity_job_what" name="duplicity_job_what" placeholder="backup" required>
-            <label for="duplicity_job_when">Lang: Job Frequency:</label>
+            <label for="duplicity_job_when"><?=$lang['admin']['duplicity_job_when'];?>:</label>
             <select data-width="200px" class="form-control" id="duplicity_job_when" name="duplicity_job_when" title="Job Interval" required>
               <option>15min</option>
               <option>hourly</option>

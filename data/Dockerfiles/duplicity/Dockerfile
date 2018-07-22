@@ -37,6 +37,10 @@ RUN chmod a+rx /usr/local/bin/redis-dump
 COPY bootstrap.sh ./
 RUN chmod a+rx bootstrap.sh
 
+# test script
+COPY test-backups.sh ./
+RUN chmod a+rx test-backups.sh
+
 # install redis shell client
 COPY redi.sh ./
 RUN chmod a+rx redi.sh

@@ -488,6 +488,25 @@ $lang['admin']['title_name'] = '"mailcow UI" website title';
 $lang['admin']['main_name'] = '"mailcow UI" name';
 $lang['admin']['apps_name'] = '"mailcow Apps" name';
 
+$lang['admin']['duplicity_heading'] = 'Backups';
+$lang['admin']['duplicity_backup_settings'] = 'Backup Settings';
+$lang['admin']['duplicity_backup_help'] = 'Set up backups here';
+$lang['admin']['duplicity_enabled'] = 'Enable Backups?';
+$lang['admin']['duplicity_backend'] = 'Backup Storage Backend (non-functional):';
+$lang['admin']['duplicity_dst'] = 'Destination path';
+$lang['admin']['duplicity_encryption'] = 'Backup Encryption Key';
+$lang['admin']['duplicity_credentials_help'] = '(Optional) Storage credentials.  Set what is needed according to your backend above. Duplicity will auto-detect which ones to use based on its destination path.';
+$lang['admin']['duplicity_s3_apikey'] = 'S3 API Key';
+$lang['admin']['duplicity_s3_apisecret'] = 'S3 API Secret';
+$lang['admin']['duplicity_ftp_pass'] = 'FTPS/SFTP password';
+$lang['admin']['duplicity_jobs_heading'] = 'Backup Jobs';
+$lang['admin']['duplicity_jobs_list'] = 'The list of backup jobs.  Jobs are expressed as ENVIRONMENT VARIABLES in this format:<br/><pre>JOB_100_WHAT: backup-command<br>JOB_200_WHEN: interval</pre>At <i>interval</i> they are executed in order of Job ID number.  EG. JOB_200 will be executed before JOB_201. <br>TESTING.  You can test all configured backups in one go with the following command:<br><pre>docker-compose exec duplicity-backup ./test-backups.sh</pre>';
+$lang['admin']['duplicity_job_add'] = 'Add Backup Job';
+$lang['admin']['duplicity_job_add_help'] = 'Add a new job.  ID represents the order it runs in.  Command is the job to run.<br>Builtin Jobs:<br>backup = executes the default duplicity backup command.<br>mysql-backup = runs mysql-dump on the mysql-mailcow DB.<br>redis-backup = trigger redis to persist to its disk.';
+$lang['admin']['duplicity_job_id'] = 'Job ID';
+$lang['admin']['duplicity_job_what'] = 'Command';
+$lang['admin']['duplicity_job_when'] = 'Interval to run the job at';
+
 $lang['admin']['customize'] = "Customize";
 $lang['admin']['change_logo'] = "Change logo";
 $lang['admin']['logo_info'] = "Your image will be scaled to a height of 40px for the top navigation bar and a max. width of 250px for the start page. A scalable graphic is highly recommended.";
