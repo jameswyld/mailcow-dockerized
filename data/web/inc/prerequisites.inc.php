@@ -87,6 +87,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.quarantine.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.policy.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.dkim.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.fwdhost.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.duplicity.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.relayhost.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.rsettings.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.fail2ban.inc.php';
@@ -98,3 +99,4 @@ if (isset($_SESSION['mailcow_cc_role'])) {
   set_acl();
 }
 $UI_TEXTS = customize('get', 'ui_texts');
+$DUPLICITY_SETTINGS = customize('get', 'duplicity_settings');

@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "Preparing to back up REDIS"
+docker exec $(docker ps -qf name=redis-mailcow) redis-cli save
+echo "REDIS backed up"

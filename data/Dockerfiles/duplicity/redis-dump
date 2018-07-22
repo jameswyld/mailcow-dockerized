@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+# wrap tecnativa/duplicity jobrunner so we can pull in settings from mailcow-redis
+# this method lets us pull the latest redis settings for EVERY backup job run.
+
+import logging
+import sys
+import redis
+from os import environ, path
+
+# set up teh connection to redis
+redis_host = environ.get("REDIS_HOST")
+
+r = redis.StrictRedis(host=redis_host, port=6379, db=0)
+
+# dump redis data
+
+# get & set base duplicity settings
+print "DUPLICITY_ENABLED: %s" % r.get('DUPLICITY_ENABLED')
+print "DUPLICITY_BACKEND: %s" % r.get('DUPLICITY_BACKEND')
+print "DUPLICITY_DST: %s" % r.get('DUPLICITY_DST')
+print "DUPLICITY_ENCRYPTION: %s" % r.get('DUPLICITY_ENCRYPTION')
+print "DUPLICITY_S3_APIKEY: %s" % r.get('DUPLICITY_S3_APIKEY')
+print "DUPLICITY_S3_APISECRET: %s" % r.get('DUPLICITY_S3_APISECRET')
+print "DUPLICITY_FTP_PASS: %s" % r.get('DUPLICITY_FTP_PASS')
+print "JOBS"
+jobs = r.hgetall('DUPLICITY_JOBS')
+# unpack the jobs hash into the environment vars
+for key,val in jobs.items():
+        print "Key: %s, val: %s" % (key, val)
+print "DONE..."

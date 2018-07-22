@@ -120,6 +120,35 @@ function customize($_action, $_item, $_data = null) {
             'msg' => $lang['success']['ui_texts']
           );
         break;
+        case 'duplicity_settings':
+          $duplicity_enabled = $_data['duplicity_enabled'];
+          $duplicity_dst = $_data['duplicity_dst'];
+          $duplicity_options = $_data['duplicity_options'];
+          $duplicity_encryption = $_data['duplicity_encryption'];
+          $duplicity_s3_apikey = $_data['duplicity_s3_apikey'];
+          $duplicity_s3_apisecret = $_data['duplicity_s3_apisecret'];
+          $duplicity_ftp_pass = $_data['duplicity_ftp_pass'];
+          try {
+            $redis->set('DUPLICITY_ENABLED', $duplicity_enabled);
+            $redis->set('DUPLICITY_DST', $duplicity_dst);
+            $redis->set('DUPLICITY_OPTIONS', $duplicity_options);
+            $redis->set('DUPLICITY_ENCRYPTION', $duplicity_encryption);
+            $redis->set('DUPLICITY_S3_APIKEY', $duplicity_s3_apikey);
+            $redis->set('DUPLICITY_S3_APISECRET', $duplicity_s3_apisecret);
+            $redis->set('DUPLICITY_FTP_PASS', $duplicity_ftp_pass);
+          }
+          catch (RedisException $e) {
+            $_SESSION['return'] = array(
+              'type' => 'danger',
+              'msg' => 'Redis: '.$e
+            );
+            return false;
+          }
+          $_SESSION['return'] = array(
+            'type' => 'success',
+            'msg' => $lang['success']['duplicity_settings']
+          );
+        break;
       }
     break;
     case 'delete':
@@ -184,6 +213,25 @@ function customize($_action, $_item, $_data = null) {
             $data['main_name'] = ($main_name = $redis->get('MAIN_NAME')) ? $main_name : 'mailcow UI';
             $data['apps_name'] = ($apps_name = $redis->get('APPS_NAME')) ? $apps_name : 'mailcow Apps';
             $data['help_text'] = ($help_text = $redis->get('HELP_TEXT')) ? $help_text : false;
+            return $data;
+          }
+          catch (RedisException $e) {
+            $_SESSION['return'] = array(
+              'type' => 'danger',
+              'msg' => 'Redis: '.$e
+            );
+            return false;
+          }
+        break;
+        case 'duplicity_settings':
+          try {
+            $data['duplicity_enabled'] = ($duplicity_enabled = $redis->get('DUPLICITY_ENABLED')) ? $duplicity_enabled : false;
+            $data['duplicity_dst'] = ($duplicity_dst = $redis->get('DUPLICITY_DST')) ? $duplicity_dst : 'file:///tmp/backups';
+            $data['duplicity_options'] = ($duplicity_options = $redis->get('DUPLICITY_OPTIONS')) ? $duplicity_options : '--full-if-older-than 1M';
+            $data['duplicity_encryption'] = ($duplicity_encryption = $redis->get('DUPLICITY_ENCRYPTION')) ? $duplicity_encryption : '';
+            $data['duplicity_s3_apikey'] = ($duplicity_s3_apikey = $redis->get('DUPLICITY_S3_APIKEY')) ? $duplicity_s3_apikey : '';
+            $data['duplicity_s3_apisecret'] = ($duplicity_s3_apisecret = $redis->get('DUPLICITY_S3_APISECRET')) ? $duplicity_s3_apisecret : 'default';
+            $data['duplicity_ftp_pass'] = ($duplicity_ftp_pass = $redis->get('DUPLICITY_FTP_PASS')) ? $duplicity_ftp_pass : 'default';
             return $data;
           }
           catch (RedisException $e) {

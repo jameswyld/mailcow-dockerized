@@ -42,7 +42,7 @@ jQuery(function($){
       }),
       "empty": lang.empty,
       "paging": {"enabled": true,"limit": 5,"size": log_pagination_size},
-      "filtering": {"enabled": true,"position": "left","connectors": false,"placeholder": lang.filter_table
+      "filtering": {"enabled": true,"delay": 1,"position": "left","connectors": false,"placeholder": lang.filter_table
       },
       "sorting": {"enabled": true}
     });
@@ -65,6 +65,30 @@ jQuery(function($){
         },
         success: function (data) {
           return process_table_data(data, 'forwardinghoststable');
+        }
+      }),
+      "empty": lang.empty,
+      "paging": {"enabled": true,"limit": 5,"size": log_pagination_size},
+      "sorting": {"enabled": true}
+    });
+  }
+  function draw_duplicity_jobs() {
+    ft_duplicityjobstable = FooTable.init('#duplicityjobstable', {
+      "columns": [
+        {"name":"chkbox","title":"","style":{"maxWidth":"40px","width":"40px"},"filterable": false,"sortable": false,"type":"html"},
+        {"name":"job","type":"text","title":"Job","style":{"width":"250px"}},
+        {"name":"value","title":"Command","breakpoints":"xs sm"},
+        {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"180px","width":"180px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
+      ],
+      "rows": $.ajax({
+        dataType: 'json',
+        url: '/api/v1/get/duplicityjob/all',
+        jsonp: false,
+        error: function () {
+          console.log('Cannot draw backup job table');
+        },
+        success: function (data) {
+          return process_table_data(data, 'duplicityjobstable');
         }
       }),
       "empty": lang.empty,
@@ -131,6 +155,13 @@ jQuery(function($){
           '<a href="#" id="delete_selected" data-id="single-domain-admin" data-api-url="delete/domain-admin" data-item="' + encodeURI(item.username) + '" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> ' + lang.remove + '</a>' +
           '</div>';
       });
+    } else if (table == 'duplicityjobstable') {
+      $.each(data, function (i, item) {
+        item.action = '<div class="btn-group">' +
+          '<a href="#" id="delete_selected" data-id="single-duplicityjob" data-api-url="delete/duplicityjob" data-item="' + encodeURI(item.job) + '" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> ' + lang.remove + '</a>' +
+          '</div>';
+        item.chkbox = '<input type="checkbox" data-id="duplicityjobs" name="multi_select" value="' + item.job + '" />';
+      });
     }
     return data
   };
@@ -138,6 +169,7 @@ jQuery(function($){
   draw_domain_admins();
   draw_fwd_hosts();
   draw_relayhosts();
+  draw_duplicity_jobs();
   // Relayhost
   $('#testRelayhostModal').on('show.bs.modal', function (e) {
     $('#test_relayhost_result').text("-");
