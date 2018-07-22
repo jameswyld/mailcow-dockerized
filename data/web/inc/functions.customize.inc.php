@@ -122,16 +122,16 @@ function customize($_action, $_item, $_data = null) {
         break;
         case 'duplicity_settings':
           $duplicity_enabled = $_data['duplicity_enabled'];
-          $duplicity_backend = $_data['duplicity_backend'];
           $duplicity_dst = $_data['duplicity_dst'];
+          $duplicity_options = $_data['duplicity_options'];
           $duplicity_encryption = $_data['duplicity_encryption'];
           $duplicity_s3_apikey = $_data['duplicity_s3_apikey'];
           $duplicity_s3_apisecret = $_data['duplicity_s3_apisecret'];
           $duplicity_ftp_pass = $_data['duplicity_ftp_pass'];
           try {
             $redis->set('DUPLICITY_ENABLED', $duplicity_enabled);
-            $redis->set('DUPLICITY_BACKEND', $duplicity_backend);
             $redis->set('DUPLICITY_DST', $duplicity_dst);
+            $redis->set('DUPLICITY_OPTIONS', $duplicity_options);
             $redis->set('DUPLICITY_ENCRYPTION', $duplicity_encryption);
             $redis->set('DUPLICITY_S3_APIKEY', $duplicity_s3_apikey);
             $redis->set('DUPLICITY_S3_APISECRET', $duplicity_s3_apisecret);
@@ -226,8 +226,8 @@ function customize($_action, $_item, $_data = null) {
         case 'duplicity_settings':
           try {
             $data['duplicity_enabled'] = ($duplicity_enabled = $redis->get('DUPLICITY_ENABLED')) ? $duplicity_enabled : false;
-            $data['duplicity_backend'] = ($duplicity_backend = $redis->get('DUPLICITY_BACKEND')) ? $duplicity_backend : 'Local';
             $data['duplicity_dst'] = ($duplicity_dst = $redis->get('DUPLICITY_DST')) ? $duplicity_dst : 'file:///tmp/backups';
+            $data['duplicity_options'] = ($duplicity_options = $redis->get('DUPLICITY_OPTIONS')) ? $duplicity_options : '--full-if-older-than 1M';
             $data['duplicity_encryption'] = ($duplicity_encryption = $redis->get('DUPLICITY_ENCRYPTION')) ? $duplicity_encryption : '';
             $data['duplicity_s3_apikey'] = ($duplicity_s3_apikey = $redis->get('DUPLICITY_S3_APIKEY')) ? $duplicity_s3_apikey : '';
             $data['duplicity_s3_apisecret'] = ($duplicity_s3_apisecret = $redis->get('DUPLICITY_S3_APISECRET')) ? $duplicity_s3_apisecret : 'default';

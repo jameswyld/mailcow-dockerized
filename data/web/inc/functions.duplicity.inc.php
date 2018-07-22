@@ -15,12 +15,25 @@ function duplicityjob($_action, $_data = null) {
       }
       $duplicity_job_id = $_data['duplicity_job_id'];
       $duplicity_job_what = $_data['duplicity_job_what'];
-      $duplicity_job_when = $_data['duplicity_job_when'];
 
+      // take the intervals and make them a single string
+      // eg. "daily weekly monthly"
+      $duplicity_job_intervals = $_data['duplicity_job_when'];
+      $duplicity_job_when = "";
+      if (is_array($duplicity_job_intervals)) {
+        foreach ($duplicity_job_intervals as $interval) {
+          $duplicity_job_when .= $interval . " ";
+          }
+        } else {
+        $duplicity_job_when = $duplicity_job_intervals;
+      }
+      $duplicity_job_when = trim($duplicity_job_when);
+
+      // build the tecnativa/duplicity job envvar format
       $dup_job_env_what = 'JOB_' . $duplicity_job_id . '_WHAT';
       $dup_job_env_when = 'JOB_' . $duplicity_job_id . '_WHEN';
 
-      # Add/set the job to redis
+      // Add/update the job in redis
       try {
         $redis->hSet('DUPLICITY_JOBS', $dup_job_env_what, $duplicity_job_what);
         $redis->hSet('DUPLICITY_JOBS', $dup_job_env_when, $duplicity_job_when);

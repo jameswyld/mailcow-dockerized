@@ -23,6 +23,7 @@ if duplicity_enabled != "true":
 else:
 	# core environment vars
 	os.environ["DST"] = str(r.get('DUPLICITY_DST'))
+	os.environ["OPTIONS"] = str(r.get('DUPLICITY_OPTIONS'))
 	os.environ["PASSPHRASE"] = str(r.get('DUPLICITY_ENCRYPTION'))
 	os.environ["AWS_ACCESS_KEY_ID"] = str(r.get('DUPLICITY_S3_APIKEY'))
 	os.environ["AWS_SECRET_ACCESS_KEY"] = str(r.get('DUPLICITY_S3_APISECRET'))

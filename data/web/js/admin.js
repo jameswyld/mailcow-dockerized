@@ -76,8 +76,8 @@ jQuery(function($){
     ft_duplicityjobstable = FooTable.init('#duplicityjobstable', {
       "columns": [
         {"name":"chkbox","title":"","style":{"maxWidth":"40px","width":"40px"},"filterable": false,"sortable": false,"type":"html"},
-        {"name":"job","type":"text","title":lang.host,"style":{"width":"250px"}},
-        {"name":"value","title":lang.source,"breakpoints":"xs sm"},
+        {"name":"job","type":"text","title":"Job","style":{"width":"250px"}},
+        {"name":"value","title":"Command","breakpoints":"xs sm"},
         {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"180px","width":"180px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
       ],
       "rows": $.ajax({

@@ -190,7 +190,7 @@ $tfa_data = get_tfa();
         <a href="#relayhosts" class="list-group-item">Relayhosts</a>
         <a href="#quarantine" class="list-group-item"><?=$lang['admin']['quarantine'];?></a>
         <a href="#rsettings" class="list-group-item">Rspamd settings map</a>
-        <a href="#backups" class="list-group-item">Lang: Backups</a>
+        <a href="#backups" class="list-group-item"><?=$lang['admin']['duplicity_heading'];?></a>
         <a href="#customize" class="list-group-item"><?=$lang['admin']['customize'];?></a>
         <a href="#top" class="list-group-item" style="border-top:1px dashed #dadada">↸ <?=$lang['admin']['to_top'];?></a>
       </div>
@@ -619,13 +619,6 @@ $tfa_data = get_tfa();
         </form>
       </div>
     </div>
-
-
-
-
-
-<?=$lang['admin']['duplicity_'];?>
-
     <span class="anchor" id="backups"></span>
     <div class="panel panel-default">
       <div class="panel-heading"><?=$lang['admin']['duplicity_heading'];?></div>
@@ -639,16 +632,12 @@ $tfa_data = get_tfa();
             <input type="checkbox" class="form-control" id="duplicity_enabled" name="duplicity_enabled" value="true" <?=($DUPLICITY_SETTINGS['duplicity_enabled']) ? 'checked' : '';?> >
           </div>
           <div class="form-group">
-            <label for="main_name"><?=$lang['admin']['duplicity_backend'];?>:</label>
-            <select data-width="200px" class="form-control" id="duplicity_backend" name="duplicity_backend" title="Backup Storage Backend" required>
-              <option>S3</option>
-              <option>FTPS</option>
-              <option>Local</option>
-            </select>
-          </div>
-          <div class="form-group">
             <label for="apps_name"><?=$lang['admin']['duplicity_dst'];?>:</label>
             <input type="text" class="form-control" id="duplicity_dst" name="duplicity_dst" placeholder="file://tmp/backups" value="<?=$DUPLICITY_SETTINGS['duplicity_dst'];?>">
+          </div>
+          <div class="form-group">
+            <label for="apps_name"><?=$lang['admin']['duplicity_options'];?>:</label>
+            <input type="text" class="form-control" id="duplicity_options" name="duplicity_options" placeholder="--full-if-older-than 1M" value="<?=$DUPLICITY_SETTINGS['duplicity_options'];?>">
           </div>
           <div class="form-group">
             <label for="apps_name"><?=$lang['admin']['duplicity_encryption'];?>:</label>
@@ -669,12 +658,9 @@ $tfa_data = get_tfa();
           </div>
           <button class="btn btn-default" id="edit_selected" data-item="duplicity" data-id="duplicity_settings" data-api-url='edit/duplicity_settings' data-api-attr='{}' href="#"><span class="glyphicon glyphicon-check"></span> <?=$lang['admin']['save'];?></button>
         </form>
-        <p class="help-block"><b>DEBUG</b><br /> <pre><?php var_dump($DUPLICITY_SETTINGS); ?></pre> </p>
       </div>
-
       <div class="panel-heading"><?=$lang['admin']['duplicity_jobs_heading'];?></div>
       <div class="panel-body">
-        <p style="margin-bottom:40px"><?=$lang['admin']['duplicity_jobs_list'];?></p>
         <div class="table-responsive">
           <table class="table table-striped table-condensed" id="duplicityjobstable"></table>
         </div>
@@ -687,8 +673,8 @@ $tfa_data = get_tfa();
             </ul>
           </div>
         </div>
+        <p class="help-block"><?=$lang['admin']['duplicity_jobs_help'];?></p>
         <legend><?=$lang['admin']['duplicity_job_add'];?></legend>
-        <p class="help-block"><?=$lang['admin']['duplicity_job_add_help'];?></p>
         <form class="form" data-id="duplicityjob" role="form" method="post">
           <div class="form-group">
             <label for="duplicity_job_id"><?=$lang['admin']['duplicity_job_id'];?>:</label>
@@ -696,42 +682,19 @@ $tfa_data = get_tfa();
             <label for="duplicity_job_what"><?=$lang['admin']['duplicity_job_what'];?>:</label>
             <input class="form-control" id="duplicity_job_what" name="duplicity_job_what" placeholder="backup" required>
             <label for="duplicity_job_when"><?=$lang['admin']['duplicity_job_when'];?>:</label>
-            <select data-width="200px" class="form-control" id="duplicity_job_when" name="duplicity_job_when" title="Job Interval" required>
-              <option>15min</option>
-              <option>hourly</option>
-              <option>daily</option>
-              <option>weekly</option>
-              <option>monthly</option>
+            <select multiple data-width="200px" class="form-control" id="duplicity_job_when" name="duplicity_job_when" title="Job Interval" required>
+              <option value="15min"><?=$lang['admin']['duplicity_job_15min'];?></option>
+              <option value="hourly"><?=$lang['admin']['duplicity_job_hourly'];?></option>
+              <option value="daily"><?=$lang['admin']['duplicity_job_daily'];?></option>
+              <option value="weekly"><?=$lang['admin']['duplicity_job_weekly'];?></option>
+              <option value="monthly"><?=$lang['admin']['duplicity_job_monthly'];?></option>
             </select>
           </div>
           <button class="btn btn-default" id="add_item" data-id="duplicityjob" data-api-url='add/duplicityjob' data-api-attr='{}' href="#"><span class="glyphicon glyphicon-plus"></span> <?=$lang['admin']['add'];?></button>
         </form>
-        <p class="help-block"><b>DEBUG:</b><br /> <a href="/api/v1/get/duplicityjob/all">view raw jobs</a></p>
+        <p class="help-block"><?=$lang['admin']['duplicity_job_add_help'];?></p>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <span class="anchor" id="customize"></span>
     <div class="panel panel-default">
       <div class="panel-heading"><?=$lang['admin']['customize'];?></div>
